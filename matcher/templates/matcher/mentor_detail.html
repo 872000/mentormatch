@@ -1,0 +1,21 @@
+{% extends "matcher/base.html" %}
+{% block title %}{{ mentor.name }} — MentorMatch{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ mentor.name }}</h1>
+  <p>{{ mentor.bio }}</p>
+  <p><strong>Skills:</strong> {{ mentor.skills }}</p>
+  <p><strong>Interests:</strong> {{ mentor.interests }}</p>
+  <p><strong>Availability:</strong> {{ mentor.availability }}</p>
+  <p><strong>Max mentees:</strong> {{ mentor.max_mentees }}</p>
+</div>
+<h2>Top matches</h2>
+{% for m in matches %}
+<div class="card">
+  <span class="score">{{ m.score }}</span>
+  <strong>{{ m.mentee.name }}</strong> <span class="tag">{{ m.status }}</span>
+  {% if m.explanation.shared_skills %}
+  <p><small>Shared skills: {{ m.explanation.shared_skills|join:", " }}</small></p>{% endif %}
+</div>
+{% empty %}<div class="card"><p>No matches computed yet.</p></div>{% endfor %}
+{% endblock %}

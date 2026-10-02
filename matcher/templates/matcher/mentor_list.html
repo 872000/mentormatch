@@ -1,0 +1,14 @@
+{% extends "matcher/base.html" %}
+{% block title %}Mentors — MentorMatch{% endblock %}
+{% block content %}
+<h1>Mentors</h1>
+<p><a class="btn" href="{% url 'matcher:mentor_create' %}">Add mentor</a></p>
+{% for m in mentors %}
+<div class="card">
+  <h3 style="margin:.2rem 0"><a href="{% url 'matcher:mentor_detail' m.pk %}">{{ m.name }}</a></h3>
+  <p>{{ m.bio|truncatewords:25 }}</p>
+  <p><small>Skills: {{ m.skills }}</small></p>
+  <p><small>{{ m.availability }}</small></p>
+</div>
+{% empty %}<div class="card"><p>No mentors yet.</p></div>{% endfor %}
+{% endblock %}

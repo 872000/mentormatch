@@ -1,0 +1,23 @@
+{% extends "matcher/base.html" %}
+{% block title %}MentorMatch — find your mentor{% endblock %}
+{% block content %}
+<h1>Find the mentor who matches how you learn</h1>
+<div class="card">
+  <p><strong>{{ mentor_count }}</strong> mentors &middot; <strong>{{ mentee_count }}</strong> mentees</p>
+  <p>Every pairing is scored by an explainable algorithm: skill coverage, shared
+     interests, and availability overlap — you always see <em>why</em> a match was made.</p>
+  <p><a class="btn" href="{% url 'matcher:mentor_create' %}">Add a mentor</a>
+     <a class="btn warn" href="{% url 'matcher:mentee_create' %}">Add a mentee</a></p>
+</div>
+<h2>Upcoming sessions</h2>
+{% for s in upcoming_sessions %}
+<div class="card">
+  <strong>{{ s.scheduled_at|date:"M d, Y H:i" }}</strong> &mdash;
+  {{ s.match.mentor.name }} x {{ s.match.mentee.name }}
+  {% if s.topic %}<br>Topic: {{ s.topic }}{% endif %}
+  <span class="tag">{{ s.status }}</span>
+</div>
+{% empty %}
+<div class="card"><p>No upcoming sessions yet. Add people, compute matches, and propose a time.</p></div>
+{% endfor %}
+{% endblock %}

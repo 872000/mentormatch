@@ -1,0 +1,33 @@
+{% extends "matcher/base.html" %}
+{% block title %}{{ mentee.name }} — MentorMatch{% endblock %}
+{% block content %}
+<div class="card">
+  <h1>{{ mentee.name }}</h1>
+  <p>{{ mentee.bio }}</p>
+  <p><strong>Skills to grow:</strong> {{ mentee.skills }}</p>
+  <p><strong>Interests:</strong> {{ mentee.interests }}</p>
+  <p><strong>Goals:</strong> {{ mentee.goals }}</p>
+</div>
+<h2>Ranked mentors — and why they match</h2>
+{% for r in ranked %}
+<div class="card">
+  <div class="bar"><div style="width:{{ r.score }}%"></div></div>
+  <p><span class="score">{{ r.score }}/100</span>
+     <strong><a href="{% url 'matcher:mentor_detail' r.mentor.pk %}">{{ r.mentor.name }}</a></strong></p>
+  {% if r.shared_skills %}
+    <p>Shared skills:
+      {% for s in r.shared_skills %}<span class="tag">{{ s }}</span>{% endfor %}</p>
+  {% endif %}
+  {% if r.shared_interests %}
+    <p>Shared interests:
+      {% for i in r.shared_interests %}<span class="tag">{{ i }}</span>{% endfor %}</p>
+  {% endif %}
+  {% if r.shared_availability %}
+    <p><small>Both free: {{ r.shared_availability|join:", " }}</small></p>
+  {% endif %}
+  <p><small>Skill coverage {{ r.components.skill_coverage }} &middot;
+     Interest similarity {{ r.components.interest_similarity }} &middot;
+     Availability bonus {{ r.components.availability_bonus }}</small></p>
+</div>
+{% empty %}<div class="card"><p>No mentors to rank yet.</p></div>{% endfor %}
+{% endblock %}

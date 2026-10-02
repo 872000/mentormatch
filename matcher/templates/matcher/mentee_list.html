@@ -1,0 +1,13 @@
+{% extends "matcher/base.html" %}
+{% block title %}Mentees — MentorMatch{% endblock %}
+{% block content %}
+<h1>Mentees</h1>
+<p><a class="btn" href="{% url 'matcher:mentee_create' %}">Add mentee</a></p>
+{% for m in mentees %}
+<div class="card">
+  <h3 style="margin:.2rem 0"><a href="{% url 'matcher:mentee_detail' m.pk %}">{{ m.name }}</a></h3>
+  <p>{{ m.goals|truncatewords:25 }}</p>
+  <p><small>Skills to grow: {{ m.skills }}</small></p>
+</div>
+{% empty %}<div class="card"><p>No mentees yet.</p></div>{% endfor %}
+{% endblock %}

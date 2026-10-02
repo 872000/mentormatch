@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MentorMatch{% endblock %}</title>
+  <style>
+    :root { --teal:#0f5f63; --amber:#f2a93b; --bg:#f6f4ee; --ink:#1e2a2a; }
+    body { font-family: system-ui, sans-serif; background:var(--bg); color:var(--ink);
+           margin:0; line-height:1.5; }
+    header { background:var(--teal); color:#fff; padding:1rem 2rem; }
+    header a { color:#fff; margin-right:1.2rem; text-decoration:none; font-weight:600; }
+    header a.brand { font-size:1.3rem; }
+    main { max-width:900px; margin:2rem auto; padding:0 1.5rem; }
+    .card { background:#fff; border-radius:10px; padding:1.2rem 1.5rem;
+            margin-bottom:1rem; box-shadow:0 2px 6px rgba(0,0,0,.08); }
+    .score { font-size:1.6rem; font-weight:700; color:var(--teal); }
+    .tag { display:inline-block; background:#e4efe8; border-radius:12px;
+           padding:.15rem .7rem; margin:.15rem .2rem; font-size:.85rem; }
+    .btn { display:inline-block; background:var(--teal); color:#fff; border:none;
+           border-radius:8px; padding:.55rem 1.1rem; cursor:pointer;
+           text-decoration:none; font-weight:600; }
+    .btn.warn { background:var(--amber); color:#1e2a2a; }
+    .messages p { background:#dff3e3; border-radius:8px; padding:.6rem 1rem; }
+    form p { margin:.7rem 0; } label { font-weight:600; display:block; }
+    input, textarea, select { width:100%; max-width:480px; padding:.5rem;
+      border:1px solid #bbb; border-radius:6px; }
+    table { width:100%; border-collapse:collapse; }
+    th, td { text-align:left; padding:.5rem; border-bottom:1px solid #ddd; }
+    .bar { height:10px; background:#e2e2e2; border-radius:5px; overflow:hidden; }
+    .bar > div { height:100%; background:var(--amber); }
+  </style>
+</head>
+<body>
+<header>
+  <a class="brand" href="{% url 'matcher:index' %}">MentorMatch</a>
+  <a href="{% url 'matcher:mentor_list' %}">Mentors</a>
+  <a href="{% url 'matcher:mentee_list' %}">Mentees</a>
+  <a href="{% url 'matcher:session_list' %}">Sessions</a>
+  <a href="/api/">API</a>
+</header>
+<main>
+  {% if messages %}<div class="messages">{% for m in messages %}<p>{{ m }}</p>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</main>
+</body>
+</html>

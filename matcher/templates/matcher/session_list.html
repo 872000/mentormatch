@@ -1,0 +1,26 @@
+{% extends "matcher/base.html" %}
+{% block title %}Sessions — MentorMatch{% endblock %}
+{% block content %}
+<h1>Sessions</h1>
+<h2>Upcoming</h2>
+{% for s in upcoming %}
+<div class="card">
+  <strong>{{ s.scheduled_at|date:"M d, Y H:i" }}</strong> &mdash;
+  {{ s.match.mentor.name }} x {{ s.match.mentee.name }} (score {{ s.match.score }})
+  {% if s.topic %}<br>Topic: {{ s.topic }}{% endif %}
+  <span class="tag">{{ s.status }}</span>
+  {% if s.status == "proposed" %}
+    <a class="btn" href="{% url 'matcher:session_accept' s.pk %}">Accept</a>
+    <a class="btn warn" href="{% url 'matcher:session_decline' s.pk %}">Decline</a>
+  {% endif %}
+</div>
+{% empty %}<div class="card"><p>Nothing upcoming.</p></div>{% endfor %}
+<h2>Past &amp; resolved</h2>
+{% for s in past %}
+<div class="card">
+  <strong>{{ s.scheduled_at|date:"M d, Y H:i" }}</strong> &mdash;
+  {{ s.match.mentor.name }} x {{ s.match.mentee.name }}
+  <span class="tag">{{ s.status }}</span>
+</div>
+{% empty %}<div class="card"><p>None yet.</p></div>{% endfor %}
+{% endblock %}
