@@ -41,8 +41,8 @@ def score_pair(mentor_skills: str, mentor_interests: str, mentor_availability: s
     union = m_interests | e_interests
     interest_similarity = len(shared_interests) / len(union) if union else 0.0
 
-    m_avail = {t.strip().lower() for t in mentor_availability.split(",") if t.strip()}
-    e_avail = {t.strip().lower() for t in mentee_availability.split(",") if t.strip()}
+    m_avail = normalize_tags(mentor_availability)
+    e_avail = normalize_tags(mentee_availability)
     overlap = sorted(m_avail & e_avail)
     availability_bonus = 1.0 if overlap else 0.0
 
