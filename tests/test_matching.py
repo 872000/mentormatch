@@ -55,6 +55,13 @@ class TestScorePair:
         assert comps["availability_bonus"] == 1.0
         assert result["score"] == pytest.approx(70.0)  # 0.6*0.5 + 0.3*1.0 + 0.1*1.0
 
+    def test_partial_skill_coverage_scores_proportionally(self):
+        result = matching.score_pair(
+            "Python, Java", "golf", "mondays",
+            "python", "chess", "tuesdays")
+        assert result["components"]["skill_coverage"] == 0.5  # 1 of 2 mentor skills
+        assert result["score"] == 30.0  # 0.6 * 0.5, no interest/availability overlap
+
     def test_availability_overlap_adds_bonus(self):
         with_overlap = matching.score_pair("Rust", "golf", "Evenings",
                                            "Python", "chess", "evenings")
