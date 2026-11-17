@@ -69,7 +69,11 @@ def score_pair(mentor_skills: str, mentor_interests: str, mentor_availability: s
 
 
 def rank_mentors_for(mentee, mentors) -> list[dict]:
-    """Rank an iterable of Mentor objects for a mentee, best first."""
+    """Rank an iterable of Mentor objects for a mentee, best first.
+
+    Ties on score are broken deterministically: more shared skills first,
+    then mentor name, so the order never depends on queryset order.
+    """
     ranked = []
     for mentor in mentors:
         result = score_pair(
@@ -77,5 +81,6 @@ def rank_mentors_for(mentee, mentors) -> list[dict]:
             mentee.skills, mentee.interests, mentee.availability,
         )
         ranked.append({"mentor": mentor, **result})
-    ranked.sort(key=lambda r: r["score"], reverse=True)
+    ranked.sort(key=lambda r: (-r["score"], -len(r["shared_skills"]),
+                               r["mentor"].name))
     return ranked

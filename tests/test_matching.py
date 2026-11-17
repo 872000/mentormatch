@@ -91,3 +91,17 @@ class TestRankMentors:
     def test_no_mentors_gives_empty_list(self):
         mentee = Mentee.objects.create(name="E", email="e2@x.com")
         assert matching.rank_mentors_for(mentee, Mentor.objects.all()) == []
+
+    def test_ties_break_toward_more_shared_skills(self):
+        mentee = Mentee.objects.create(name="E", email="e3@x.com",
+                                       skills="python, java", interests="chess",
+                                       availability="evenings")
+        fewer = Mentor.objects.create(name="Fewer", email="f@x.com",
+                                      skills="Python, Rust", interests="chess",
+                                      availability="evenings")
+        more = Mentor.objects.create(name="More", email="m@x.com",
+                                     skills="Python, Java, Rust, Go",
+                                     interests="chess", availability="evenings")
+        ranked = matching.rank_mentors_for(mentee, Mentor.objects.all())
+        assert ranked[0]["score"] == ranked[1]["score"] == 70.0
+        assert [r["mentor"].pk for r in ranked] == [more.pk, fewer.pk]
